@@ -20,7 +20,7 @@ export default class Pattern extends React.Component {
         image,
         isImageLoaded: true
       })
-    image.src = '/pattern.png'
+    image.src = 'pattern.png'
   }
 
   componentDidMount = () =>

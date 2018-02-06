@@ -7,7 +7,7 @@ export default class Canvas extends React.Component {
     onMouseDown: PropTypes.func.isRequired,
     onMouseMove: PropTypes.func.isRequired,
     onMouseUp: PropTypes.func.isRequired,
-    penColor: PropTypes.object,
+    penColor: PropTypes.string,
     penWidth: PropTypes.number,
     mode: PropTypes.string
   }
