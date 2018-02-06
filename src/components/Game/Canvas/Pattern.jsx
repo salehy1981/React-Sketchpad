@@ -8,29 +8,35 @@ export default class Pattern extends React.Component {
   }
 
   static state = {
-    image: false
+    image: false,
+    isImageLoaded: false
   }
 
-  componentDidMount = () => {
+  //load image
+  componentWillMount = () => {
+    const image = new Image()
+    image.onload = () =>
+      this.setState({
+        image,
+        isImageLoaded: true
+      })
+    image.src = '/pattern.png'
+  }
+
+  componentDidMount = () =>
     this.ctx = this.canvasElement.getContext('2d')
 
-    const image = new Image()
-    image.onload = () => this.setState({
-      image
-    })
-    image.src = 'https://i.imgur.com/vYd7f7l.png'
-  }
+  //redraw pattern
+  componentDidUpdate = () => {
+    if(!this.state.isImageLoaded)
+      return
 
-  drawPattern = () => {
     this.ctx.fillStyle = this.ctx.createPattern(
       this.state.image,
       'repeat'
     )
-
     this.ctx.fillRect(0, 0, this.props.width, this.props.height)
   }
-
-  componentDidUpdate = this.drawPattern
 
   render(){
     return (
