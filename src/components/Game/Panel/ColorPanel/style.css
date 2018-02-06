@@ -1,0 +1,39 @@
+:root {
+  --icon-border: #b0bec5;
+  --icon-border-active: #607D8B;
+  --icon: #1a237e
+}
+
+.circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  box-sizing: content-box;
+
+  transition: transform .2s;
+}
+.circle:not(.active) {
+  cursor: pointer;
+}
+.circle:not(.active):hover {
+  transform: scale(1.1);
+}
+
+.icon-inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 43px;
+  height: 43px;
+  border: 2px solid var(--icon-border);
+}
+.icon-inside.active {
+  transform: scale(1.1);
+  border: 2px solid var(--icon-border-active);
+}
+
+.icon-inside > .icon {
+  width: 60%;
+  height: 60%;
+  color: var(--icon);
+}
