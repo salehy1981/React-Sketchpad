@@ -1,4 +1,4 @@
-import { compose, always, tap } from 'ramda'
+import { compose, always } from 'ramda'
 
 const initialCanvasSize = {
   width: 550,
@@ -13,20 +13,14 @@ const calcMaxZoom = () =>
     (window.innerWidth - 250 /* panel */) / initialCanvasSize.width
   )
 
-const limitToMax = maxFn => {
+const limitToMax = maxFn => value => {
   const max = maxFn()
-  return value =>
-    value > max ? max : value
+  return value > max ? max : value
 }
 
-const limitToMin = minFn => {
+const limitToMin = minFn => value => {
   const min = minFn()
-  console.log('min', min)
-  return value => {
-    console.log('value', value)
-    console.log('test', value < min)
-    return value < min ? min : value
-  }
+  return value < min ? min : value
 }
 
 const roundPercent = number =>
@@ -34,15 +28,11 @@ const roundPercent = number =>
 
 export const limitZoomToEdges =
   compose(
-    tap(e => console.log(3, e)),
     limitToMax(
       calcMaxZoom
     ),
-    tap(e => console.log(2, e)),
-    () => 0.7,
-    //limitToMin(
-    //  always(0.7)
-    //),
-    tap(e => console.log(1, e)),
+    limitToMin(
+      always(0.7)
+    ),
     roundPercent
   )
