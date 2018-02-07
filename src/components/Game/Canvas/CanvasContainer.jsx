@@ -4,8 +4,11 @@ import { connect } from 'react-redux'
 
 import Pattern from './Pattern'
 import Canvas from './Canvas'
+import { getOffset } from './scripts'
 
 class CanvasContainer extends React.Component {
+  /* MouseEvent section */
+
   isMouseDown = false
 
   onMouseDown = ({ nativeEvent: { offsetX: x, offsetY: y } }) => {
@@ -30,6 +33,32 @@ class CanvasContainer extends React.Component {
   onMouseOut = () =>
     this.isMouseDown && this.onMouseUp()
 
+  /* TouchEvent section */
+
+  onTouchStart = ({ nativeEvent }) => {
+    console.log('onTouchStart')
+  }
+
+  onTouchMove = ({ nativeEvent }) => {
+    console.log('onTouchMove, zoom:', this.props.canvasZoom)
+
+    const { x, y } = getOffset(nativeEvent, this.props.canvasZoom)
+
+    this.canvas.connectLine({ x, y })
+  }
+
+  onTouchCancel = () => {
+    console.log('onTouchCancel')
+
+    this.canvas.closeLine()
+  }
+
+  onTouchEnd = () => {
+    console.log('onTouchEnd')
+
+    this.canvas.closeLine()
+  }
+
   render(){
     const { width, height } = this.props
     return (
@@ -40,13 +69,19 @@ class CanvasContainer extends React.Component {
         />
         <Canvas
           ref={ instance => this.canvas = instance }
+          penColor={ this.props.penColor }
+          penWidth={ this.props.penWidth }
+          mode={ this.props.mode }
+
           onMouseDown={ this.onMouseDown }
           onMouseMove={ this.onMouseMove }
           onMouseUp={ this.onMouseUp }
           onMouseOut={ this.onMouseOut }
-          penColor={ this.props.penColor }
-          penWidth={ this.props.penWidth }
-          mode={ this.props.mode }
+
+          onTouchStart={ this.onTouchStart }
+          onTouchMove={ this.onTouchMove }
+          onTouchCancel={ this.onTouchCancel }
+          onTouchEnd={ this.onTouchEnd }
         />
       </div>
     )
@@ -61,7 +96,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     penColor: state.drawing.pen.color,
     penWidth: state.drawing.pen.width,
-    mode: state.drawing.mode
+    mode: state.drawing.mode,
+
+    //for touch offset scaling
+    canvasZoom: state.game.canvasZoom
   }
 }
 

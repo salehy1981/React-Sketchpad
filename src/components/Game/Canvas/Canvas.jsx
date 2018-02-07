@@ -76,14 +76,20 @@ export default class Canvas extends React.Component {
 
     return (
       <canvas
+        ref={ instance => this.canvasElement = instance }
         style={ { width, height } }
         width={ width }
         height={ height }
-        ref={ instance => this.canvasElement = instance }
+        
         onMouseDown={ this.props.onMouseDown }
         onMouseMove={ this.props.onMouseMove }
         onMouseUp={ this.props.onMouseUp }
         onMouseOut={ this.props.onMouseOut }
+
+        onTouchStart={ this.props.onTouchStart }
+        onTouchMove={ this.props.onTouchMove }
+        onTouchCancel={ this.props.onTouchCancel }
+        onTouchEnd={ this.props.onTouchEnd }
       />
     )
   }
